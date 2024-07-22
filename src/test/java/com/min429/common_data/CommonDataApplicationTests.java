@@ -1,10 +1,10 @@
-package com.min429.templates;
+package com.min429.common_data;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class TemplatesApplicationTests {
+class CommonDataApplicationTests {
 
 	@Test
 	void contextLoads() {

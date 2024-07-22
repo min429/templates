@@ -1,13 +1,12 @@
-package com.min429.templates;
+package com.min429.common_data;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class TemplatesApplication {
+public class CommonDataApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(TemplatesApplication.class, args);
+		SpringApplication.run(CommonDataApplication.class, args);
 	}
-
 }
