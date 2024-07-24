@@ -28,9 +28,4 @@ public class TourController {
 		@Parameter(name = "area", description = "지역 이름", in = ParameterIn.QUERY) Long areacode) {
 		return SwaggerResponseEntity.success(tourService.findAllByAreacode(areacode));
 	}
-
-	@GetMapping("/process")
-	public void process() {
-		tourApiUtil.schedule();
-	}
 }

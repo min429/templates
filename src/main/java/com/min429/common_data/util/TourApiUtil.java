@@ -29,10 +29,9 @@ import com.min429.common_data.repository.mongo.AccommodationRepository;
 import com.min429.common_data.repository.mongo.RestaurantRepository;
 import com.min429.common_data.repository.mongo.SpotRepository;
 
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @RequiredArgsConstructor
 @Component
 @Transactional
@@ -49,6 +48,7 @@ public class TourApiUtil {
 	@Value("${api_key}")
 	private String apiKey;
 
+	@PostConstruct
 	@Scheduled(cron = "0 0 0 1 * ?") // 매월 1일 0시 0분에 실행
 	public void schedule() throws ApiException {
 		process(제주도.code(), 관광지.code(), SPOT);
@@ -57,7 +57,6 @@ public class TourApiUtil {
 	}
 
 	public void process(Long areacode, Long contenttypeid, Type type) {
-		log.info("here1");
 		Long pageNum = getAreaBaseList1PageNum(areacode, contenttypeid);
 		for (long page = 1; page <= pageNum; page++)
 			searchAreaBasedList1(areacode, contenttypeid, type, page);
@@ -76,8 +75,6 @@ public class TourApiUtil {
 	public Iterator<JsonNode> requestApi(String uri) throws ApiException {
 		try {
 			String response = restTemplate.getForObject(uri, String.class);
-			log.info("response: {}", response);
-
 			JsonNode root = objectMapper.readTree(response);
 			String resultCode = root
 				.path("response")
@@ -101,7 +98,6 @@ public class TourApiUtil {
 	}
 
 	public void requestAreaBasedList1Api(String uri, Type type) {
-		log.info("here2");
 		Iterator<JsonNode> items = requestApi(uri);
 		List<Info> infos = getInfos(items);
 		switch (type) {
@@ -126,7 +122,6 @@ public class TourApiUtil {
 	}
 
 	public void requestDetailCommonApi(String uri, Type type) {
-		log.info("here3");
 		JsonNode item = requestApi(uri).next();
 		switch (type) {
 			case SPOT: {
