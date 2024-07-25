@@ -35,11 +35,11 @@ public class MongoConfig {
 	public ApplicationListener<ContextRefreshedEvent> initIndexes(MongoTemplate mongoTemplate) {
 		return event -> {
 			mongoTemplate.indexOps("restaurant")
-				.ensureIndex(new Index().on("contenttypeid", Sort.Direction.ASC).unique()); // unique -> 고유한 필드
+				.ensureIndex(new Index().on("contentid", Sort.Direction.ASC).unique()); // unique -> 고유한 필드
 			mongoTemplate.indexOps("spot")
-				.ensureIndex(new Index().on("contenttypeid", Sort.Direction.ASC).unique());
+				.ensureIndex(new Index().on("contentid", Sort.Direction.ASC).unique());
 			mongoTemplate.indexOps("accommodation")
-				.ensureIndex(new Index().on("contenttypeid", Sort.Direction.ASC).unique());
+				.ensureIndex(new Index().on("contentid", Sort.Direction.ASC).unique());
 		};
 	}
 }

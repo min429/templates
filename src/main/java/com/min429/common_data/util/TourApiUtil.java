@@ -29,7 +29,6 @@ import com.min429.common_data.repository.mongo.AccommodationRepository;
 import com.min429.common_data.repository.mongo.RestaurantRepository;
 import com.min429.common_data.repository.mongo.SpotRepository;
 
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -48,7 +47,6 @@ public class TourApiUtil {
 	@Value("${api_key}")
 	private String apiKey;
 
-	@PostConstruct
 	@Scheduled(cron = "0 0 0 1 * ?") // 매월 1일 0시 0분에 실행
 	public void schedule() throws ApiException {
 		process(제주도.code(), 관광지.code(), SPOT);
