@@ -9,7 +9,7 @@ import lombok.Builder;
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record SpotResponse(
-	@NotNull String title, // 콘텐츠명 (제목)
+	String title, // 콘텐츠명 (제목)
 	String firstimage, // 대표 이미지 (원본) URL
 	String addr1, // 주소
 	String overview // 소개

@@ -1,5 +1,9 @@
 package com.min429.common_data.domain;
 
+import com.min429.common_data.domain.enums.Area;
+import com.min429.common_data.domain.enums.ContentType;
+import com.min429.common_data.domain.enums.Sigungu;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,32 +17,32 @@ import lombok.NoArgsConstructor;
 public class Info {
 
 	private String addr1; // 주소
-	private Long areacode; // 지역코드
+	private Area area; // 지역코드
 	private String cat1; // 대분류 코드
 	private String cat2; // 중분류 코드
 	private String cat3; // 소분류 코드
 	private Long contentid; // 콘텐츠 ID
-	private Long contenttypeid; // 콘텐츠 타입 ID
+	private ContentType contentType; // 콘텐츠 타입 ID
 	private String firstimage; // 대표이미지
 	private Double mapx; // GPS X좌표
 	private Double mapy; // GPS Y좌표
-	private Long sigungucode; // 시군구코드
+	private Sigungu sigungu; // 시군구코드
 	private String title; // 콘텐츠제목
 	private String tel; // 전화번호
 	private String overview; // 소개
 
 	public Info(Info info) {
 		this.addr1 = info.addr1;
-		this.areacode = info.areacode;
+		this.area = info.area;
 		this.cat1 = info.cat1;
 		this.cat2 = info.cat2;
 		this.cat3 = info.cat3;
 		this.contentid = info.contentid;
-		this.contenttypeid = info.contenttypeid;
+		this.contentType = info.contentType;
 		this.firstimage = info.firstimage;
 		this.mapx = info.mapx;
 		this.mapy = info.mapy;
-		this.sigungucode = info.sigungucode;
+		this.sigungu = info.sigungu;
 		this.title = info.title;
 		this.tel = info.tel;
 		this.overview = info.overview;

@@ -1,4 +1,4 @@
-package com.min429.common_data.domain;
+package com.min429.common_data.domain.enums;
 
 public enum Area {
 	서울(1L),
@@ -27,5 +27,14 @@ public enum Area {
 
 	public Long code() {
 		return code;
+	}
+
+	public static Area fromCode(Long code) {
+		for (Area area : Area.values()) {
+			if (area.code().equals(code)) {
+				return area;
+			}
+		}
+		throw new IllegalArgumentException("Unknown code: " + code);
 	}
 }

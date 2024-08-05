@@ -1,16 +1,16 @@
 package com.min429.common_data.util;
 
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
+
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
-import java.util.Map;
-
-import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;

@@ -1,8 +1,8 @@
 package com.min429.common_data.util;
 
-import static com.min429.common_data.domain.Area.*;
-import static com.min429.common_data.domain.Category.*;
-import static com.min429.common_data.domain.Type.*;
+import static com.min429.common_data.domain.enums.Area.*;
+import static com.min429.common_data.domain.enums.ContentType.*;
+import static com.min429.common_data.domain.enums.Type.*;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -23,12 +23,16 @@ import com.min429.common_data.domain.Accommodation;
 import com.min429.common_data.domain.Info;
 import com.min429.common_data.domain.Restaurant;
 import com.min429.common_data.domain.Spot;
-import com.min429.common_data.domain.Type;
+import com.min429.common_data.domain.enums.Area;
+import com.min429.common_data.domain.enums.ContentType;
+import com.min429.common_data.domain.enums.Sigungu;
+import com.min429.common_data.domain.enums.Type;
 import com.min429.common_data.exception.ApiException;
 import com.min429.common_data.repository.mongo.AccommodationRepository;
 import com.min429.common_data.repository.mongo.RestaurantRepository;
 import com.min429.common_data.repository.mongo.SpotRepository;
 
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -47,17 +51,18 @@ public class TourApiUtil {
 	@Value("${api_key}")
 	private String apiKey;
 
+	@PostConstruct
 	@Scheduled(cron = "0 0 0 1 * ?") // 매월 1일 0시 0분에 실행
 	public void schedule() throws ApiException {
-		process(제주도.code(), 관광지.code(), SPOT);
-		process(제주도.code(), 음식점.code(), RESTAURANT);
-		process(제주도.code(), 숙소.code(), ACCOMMODATION);
+		process(제주도, 관광지, SPOT);
+		process(제주도, 음식점, RESTAURANT);
+		process(제주도, 숙소, ACCOMMODATION);
 	}
 
-	public void process(Long areacode, Long contenttypeid, Type type) {
-		Long pageNum = getAreaBaseList1PageNum(areacode, contenttypeid);
+	public void process(Area area, ContentType contentType, Type type) {
+		Long pageNum = getAreaBaseList1PageNum(area, contentType);
 		for (long page = 1; page <= pageNum; page++)
-			searchAreaBasedList1(areacode, contenttypeid, type, page);
+			searchAreaBasedList1(area, contentType, type, page);
 	}
 
 	public UriComponentsBuilder getCommonUri(String endpoint, Long pageNo) {
@@ -142,11 +147,11 @@ public class TourApiUtil {
 		}
 	}
 
-	public void searchAreaBasedList1(Long areaCode, Long contentTypeId, Type type, Long pageNo) {
+	public void searchAreaBasedList1(Area area, ContentType contentType, Type type, Long pageNo) {
 		String uri = getCommonUri("areaBasedList1", pageNo).queryParam("listYN", "Y") // 목록구분
 			.queryParam("arrange", "A") // 정렬구분
-			.queryParam("contentTypeId", contentTypeId) // 콘텐츠 타입 ID
-			.queryParam("areaCode", areaCode) // 지역코드
+			.queryParam("contentTypeId", contentType.id()) // 콘텐츠 타입 ID
+			.queryParam("areaCode", area.code()) // 지역코드
 			.build().toUri().toString();
 		requestAreaBasedList1Api(uri, type);
 	}
@@ -167,11 +172,11 @@ public class TourApiUtil {
 	private Info getInfo(JsonNode item) {
 		return Info.builder()
 			.contentid(item.path("contentid").asLong())
-			.contenttypeid(item.path("contenttypeid").asLong())
+			.contentType(ContentType.fromId(item.path("contenttypeid").asLong()))
 			.title(item.path("title").asText())
 			.firstimage(item.path("firstimage").asText())
-			.areacode(item.path("areacode").asLong())
-			.sigungucode(item.path("sigungucode").asLong())
+			.area(Area.fromCode(item.path("areacode").asLong()))
+			.sigungu(Sigungu.fromCode(item.path("sigungucode").asLong()))
 			.cat1(item.path("cat1").asText())
 			.cat2(item.path("cat2").asText())
 			.cat3(item.path("cat3").asText())
@@ -192,10 +197,10 @@ public class TourApiUtil {
 		return infos;
 	}
 
-	public Long getAreaBaseList1PageNum(Long areaCode, Long contentTypeId) {
+	public Long getAreaBaseList1PageNum(Area area, ContentType contentType) {
 		String uri = getCommonUri("areaBasedList1", 1L).queryParam("listYN", "N") // 목록구분
-			.queryParam("contentTypeId", contentTypeId) // 콘텐츠 타입 ID
-			.queryParam("areaCode", areaCode) // 지역코드
+			.queryParam("contentTypeId", contentType.id()) // 콘텐츠 타입 ID
+			.queryParam("areaCode", area.code()) // 지역코드
 			.build().toUri().toString();
 		JsonNode item = requestApi(uri).next();
 		Long totalCnt = item.path("totalCnt").asLong();
