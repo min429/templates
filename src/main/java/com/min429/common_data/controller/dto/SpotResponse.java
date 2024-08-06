@@ -1,7 +1,5 @@
 package com.min429.common_data.controller.dto;
 
-import org.antlr.v4.runtime.misc.NotNull;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import lombok.Builder;
