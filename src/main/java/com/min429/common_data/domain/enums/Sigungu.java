@@ -1,6 +1,7 @@
 package com.min429.common_data.domain.enums;
 
 public enum Sigungu {
+	Unknown(0L),
 	남제주군(1L),
 	북제주군(2L),
 	서귀포시(3L),
