@@ -54,9 +54,9 @@ public class TourApiUtil {
 	@PostConstruct
 	@Scheduled(cron = "0 0 0 1 * ?") // 매월 1일 0시 0분에 실행
 	public void schedule() throws ApiException {
-		process(제주도, 관광지, SPOT);
 		process(제주도, 음식점, RESTAURANT);
 		process(제주도, 숙소, ACCOMMODATION);
+		process(제주도, 관광지, SPOT);
 	}
 
 	public void process(Area area, ContentType contentType, Type type) {
