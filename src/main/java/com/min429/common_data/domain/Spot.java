@@ -1,23 +1,15 @@
 package com.min429.common_data.domain;
 
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
-@Document(collection = "spot")
+@Document(collection = "admin-spot")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@SuperBuilder
 public class Spot extends Info {
-
-	@Id
-	private String id;
-
-	public Spot(Info info) {
-		super(info);
-	}
 }
