@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -32,12 +31,10 @@ import com.min429.common_data.repository.mongo.AccommodationRepository;
 import com.min429.common_data.repository.mongo.RestaurantRepository;
 import com.min429.common_data.repository.mongo.SpotRepository;
 
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Component
-@Transactional
 @EnableScheduling
 public class TourApiUtil {
 
@@ -51,7 +48,7 @@ public class TourApiUtil {
 	@Value("${api_key}")
 	private String apiKey;
 
-	@PostConstruct
+	// @PostConstruct
 	@Scheduled(cron = "0 0 0 1 * ?") // 매월 1일 0시 0분에 실행
 	public void schedule() throws ApiException {
 		process(제주도, 음식점, RESTAURANT);
@@ -128,17 +125,17 @@ public class TourApiUtil {
 		JsonNode item = requestApi(uri).next();
 		switch (type) {
 			case SPOT: {
-				Spot spot = new Spot(getInfo(item));
+				Spot spot = (Spot) getInfo(item);
 				spotRepository.save(spot);
 				break;
 			}
 			case RESTAURANT: {
-				Restaurant restaurant = new Restaurant(getInfo(item));
+				Restaurant restaurant = (Restaurant) getInfo(item);
 				restaurantRepository.save(restaurant);
 				break;
 			}
 			case ACCOMMODATION: {
-				Accommodation accommodation = new Accommodation(getInfo(item));
+				Accommodation accommodation = (Accommodation) getInfo(item);
 				accommodationRepository.save(accommodation);
 				break;
 			}
@@ -202,8 +199,10 @@ public class TourApiUtil {
 			.queryParam("contentTypeId", contentType.id()) // 콘텐츠 타입 ID
 			.queryParam("areaCode", area.code()) // 지역코드
 			.build().toUri().toString();
+
 		JsonNode item = requestApi(uri).next();
 		Long totalCnt = item.path("totalCnt").asLong();
+
 		if (totalCnt % numOfRows == 0)
 			return totalCnt / numOfRows;
 		return totalCnt / numOfRows + 1;

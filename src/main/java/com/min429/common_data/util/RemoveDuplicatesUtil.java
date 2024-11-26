@@ -12,7 +12,6 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 
 @Component
@@ -21,11 +20,11 @@ public class RemoveDuplicatesUtil {
 
 	private final MongoTemplate mongoTemplate;
 
-	@PostConstruct
+	// @PostConstruct
 	public void removeDuplicates() {
-		removeDuplicatesFromCollection("restaurant");
-		removeDuplicatesFromCollection("spot");
-		removeDuplicatesFromCollection("accommodation");
+		removeDuplicatesFromCollection("admin-restaurant");
+		removeDuplicatesFromCollection("admin-spot");
+		removeDuplicatesFromCollection("admin-accommodation");
 	}
 
 	private void removeDuplicatesFromCollection(String collectionName) {
@@ -42,7 +41,7 @@ public class RemoveDuplicatesUtil {
 
 		// 중복 문서 삭제
 		for (Map doc : duplicates) {
-			List<String> uniqueIds = (List<String>) doc.get("uniqueIds");
+			List<String> uniqueIds = (List<String>)doc.get("uniqueIds");
 			if (uniqueIds != null && uniqueIds.size() > 1) {
 				Query query = new Query(Criteria.where("_id").in(uniqueIds.subList(1, uniqueIds.size())));
 				mongoTemplate.remove(query, collectionName);
